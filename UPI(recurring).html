@@ -1,0 +1,41 @@
+<script type="text/javascript" src="https://checkout.razorpay.com/v1/razorpay.js"></script>
+<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+  <body><button id="btn" style="background-color: #3399cc; color: white; font-size: 16px; font-family: sans-serif">Pay</button>
+<script>
+  const btn = document.querySelector("#btn");
+                var razorpay = new Razorpay({
+                  key: "rzp_test_XukXG41OdOgfpR",
+                  image: "https://i.imgur.com/n5tjHFD.png"
+                });
+          razorpay.once("ready", function(response) {
+            console.log(response.methods);
+          })
+          var data = {
+      "amount": 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+      "currency": "INR",// Default is INR. We support more than 90 currencies.
+      "email": "gaurav.kumar@example.com",
+      "contact": "9123456780",
+      "notes": {
+        "address": "Ground Floor, SJR Cyber, Laskar Hosur Road, Bengaluru",
+      },
+      "order_id": "order_HMpsqk6OZhYn2P",
+      "customer_id": "cust_Gew6ky4z45nc0t",
+      "recurring": "1",
+      "method": "nach",
+  	  "bank": "HDFC",
+  	  "auth_type": "physical",
+  	  "bank_account[name]": "Gaurav Kumar",
+  	  "bank_account[account_number]": "1121431121541121",
+  	  "bank_account[account_type]": "savings",
+  	  "bank_account[ifsc]": "HDFC0000001"
+    };
+      btn.addEventListener("click", function(){ // has to be placed within user initiated context, such as click, in order for popup to open.
+      razorpay.createPayment(data);
+      razorpay.on("payment.success", function(resp) {
+        alert(resp.razorpay_payment_id),
+        alert(resp.razorpay_order_id),
+        alert(resp.razorpay_signature)}); // will pass payment ID, order ID, and Razorpay signature to success handler.
+      razorpay.on("payment.error", function(resp){alert(resp.error.description)}); // will pass error object to error handler
+    })
+  </script>
+</body>
